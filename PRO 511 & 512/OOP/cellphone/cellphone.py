@@ -22,4 +22,3 @@ class Cellphone:
 
     def get_price(self):
         return self.__retail_price 
-
