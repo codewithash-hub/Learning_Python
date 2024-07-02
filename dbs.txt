@@ -1,0 +1,96 @@
+Index Selectivity
+Indexes are the most important technique used in SQL performance optimization. The key is to
+know when an index is used. As a rule, indexes are likely to be used:
+ When an indexed column appears by itself in the search criteria of a WHERE or HAVING
+clause
+ When an indexed column appears by itself in a GROUP BY or ORDER BY clause
+ When a MAX or MIN function is applied to an indexed column
+ When the data sparsity on the indexed column is high
+
+Here are some general guidelines for
+creating and using indexes:
+ Create indexes for each single attribute used in a WHERE, HAVING, ORDER BY, or GROUP
+BY clause.
+ Do not use indexes in small tables or tables with low sparsity.
+ Declare primary and foreign keys so the optimizer can use the indexes in join operations.
+ Declare indexes in join columns other than PK or FK.
+
+The following common practices are used to write efficient conditional expressions in
+SQL code.
+ Use simple columns or literals as operands in a conditional expression—avoid the use of
+conditional expressions with functions whenever possible. Comparing the contents of a single
+column to a literal is faster than comparing to expressions.
+ Numeric field comparisons are faster than character, date, and NULL comparisons. In general,
+the CPU handles numeric comparisons (integer and decimal) faster.
+ Equality comparisons are generally faster than inequality comparisons.
+ Whenever possible, transform conditional expressions to use literals.
+ When using multiple conditional expressions, write the equality conditions first.
+ If you use multiple AND conditions, write the condition most likely to be false first. If you use
+this technique, the DBMS will stop evaluating the rest of the conditions as soon as it finds a
+conditional expression that is evaluated as false.
+ When using multiple OR conditions, put the condition most likely to be true first. By doing
+this, the DBMS will stop evaluating the remaining conditions as soon as it finds a conditional
+expression that is evaluated as true.
+ Whenever possible, try to avoid the use of the NOT logical operator.
+
+Query Formulation
+
+1. Identify what columns and computations are required.
+a. Do you need simple expressions?
+b. Do you need aggregate functions? In some cases, you might need to use a subquery.
+c. Determine the granularity of the raw data required for your output.
+2. Identify the source tables.
+3. Determine how to join the tables.
+4. Determine what selection criteria are needed. Most queries involve some type of
+selection/comparison criteria, such as:
+a. Simple comparison.
+b. Single value to multiple values.
+c. Nested comparisons.
+d. Grouped data selection.
+5. Determine the order in which to display the output. 
+
+DBMS performance tuning at the server end focuses on setting the parameters
+used for:
+ Data cache. The data cache size must be set large enough to permit as many data requests as
+possible to be serviced from the cache.
+ SQL cache. The SQL cache stores the most recently executed SQL statements (after the SQL
+statements have been parsed by the optimizer).
+ Sort cache. The sort cache is used as a temporary storage area for ORDER BY or GROUP BY
+operations, as well as for index-creation functions.
+ Optimizer mode. 
+
+That is why managing the physical storage
+details of the data files plays an important role in DBMS performance tuning. Note the following
+general recommendations for physical storage of databases:
+ Use I/O accelerators. This type of device uses flash solid state drives (SSDs) to store the
+database.
+ Use RAID (Redundant Array of Independent Disks) to provide both performance improvement
+and fault tolerance, and a balance between them. Fault tolerance means that in case of failure,
+data can be reconstructed and retrieved.
+ Minimize disk contention. Use multiple, independent storage volumes with independent
+spindles (rotating disks) to minimize hard disk cycles. A database should have at least the
+following table spaces:
+o System table space. This is used to store the data dictionary tables.
+o User data table space. This is used to store end-user data.
+o Index table space. This is used to store indexes.
+o Temporary table space. This is used as a temporary storage area for merge, sort, or set
+aggregate operations.
+o Rollback segment table space. This is used for transaction-recovery purposes.
+ Put high-usage tables in their own table spaces so the database minimizes conflict with other
+tables.
+ Assign separate data files in separate storage volumes for the indexes, system, and high-usage
+tables. This ensures that index operations will not conflict with end-user data or data dictionary
+table access operations.
+ Take advantage of the various table storage organizations available in the database.
+ Partition tables based on usage.
+ Use denormalized tables where appropriate.
+ Store computed and aggregate attributes in tables. In short, use derived attributes in your tables.
+
+Design conceptual                                   
+Data analysis and requirements
+ERM and normalization
+Data model verfication
+Distribution database design 
+
+Performance tuning relates to the activities 
+that make the database perform more efficiently in terms of storage and access speed
